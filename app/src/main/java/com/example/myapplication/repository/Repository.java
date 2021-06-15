@@ -10,7 +10,6 @@ import com.example.myapplication.loginModel.LoginInfo;
 import com.example.myapplication.loginModel.LoginRequest;
 import com.example.myapplication.retrofit.ApiRequest;
 import com.example.myapplication.retrofit.RetrofitRequest;
-import com.example.myapplication.userModel.UserData;
 import com.example.myapplication.userModel.UserInfo;
 
 import retrofit2.Call;
@@ -18,11 +17,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Repository {
+    private ApiRequest apiResult;
     private ApiRequest apiRequest;
+
     private MySharePreferences mySharePreferences;
 
     public Repository(Context context) {
-        apiRequest = RetrofitRequest.getRetrofitInstance(context).create(ApiRequest.class);
+        apiResult = RetrofitRequest.getRetrofitInstance(context).create(ApiRequest.class);
+        apiRequest = RetrofitRequest.getRetrofitLogin(context).create(ApiRequest.class);
         mySharePreferences = new MySharePreferences(context);
     }
 
@@ -49,7 +51,7 @@ public class Repository {
     public LiveData<UserInfo> getUserData() {
         final MutableLiveData<UserInfo> data = new MutableLiveData<>();
         String id = mySharePreferences.getId();
-        apiRequest.getUserInfo(id).enqueue(new Callback<UserInfo>() {
+        apiResult.getUserInfo(id).enqueue(new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 if (response.body() != null) {

@@ -19,8 +19,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         mySharePreferences = new MySharePreferences(this);
-        token = mySharePreferences.getToken();
-        id = mySharePreferences.getId();
+        try {
+            token = mySharePreferences.getToken();
+            id = mySharePreferences.getId();
+        } catch (Exception e) {
+
+        }
         if (token.isEmpty() && id.isEmpty()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new Fragment_Login()).commit();
         } else {
